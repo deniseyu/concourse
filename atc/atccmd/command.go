@@ -332,6 +332,10 @@ func (cmd *RunCommand) Runner(positionalArguments []string) (ifrit.Runner, error
 	db.SetupConnectionRetryingDriver("postgres", cmd.Postgres.ConnectionString(), retryingDriverName)
 	logger, reconfigurableSink := cmd.Logger.Logger("atc")
 
+	// Register the sink that collects error metrics
+	errorSinkCollector := metric.NewErrorSinkCollector(logger)
+	logger.RegisterSink(&errorSinkCollector)
+
 	http.HandleFunc("/debug/connections", func(w http.ResponseWriter, r *http.Request) {
 		for _, stack := range db.GlobalConnectionTracker.Current() {
 			fmt.Fprintln(w, stack)

@@ -356,6 +356,25 @@ func ms(duration time.Duration) float64 {
 	return float64(duration) / 1000000
 }
 
+type ErrorLog struct {
+	Message string
+	Value   int
+}
+
+func (e ErrorLog) Emit(logger lager.Logger) {
+	emit(
+		logger.Session("error messages"),
+		Event{
+			Name:  "error-messages",
+			Value: e.Value,
+			State: EventStateWarning,
+			Attributes: map[string]string{
+				"message": e.Message,
+			},
+		},
+	)
+}
+
 type HTTPResponseTime struct {
 	Route    string
 	Path     string

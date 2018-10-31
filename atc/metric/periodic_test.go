@@ -42,6 +42,7 @@ var _ = Describe("Periodic emission of metrics", func() {
 	AfterEach(func() {
 		process.Signal(os.Interrupt)
 		<-process.Wait()
+		metric.Deinitialize(nil)
 	})
 
 	It("emits database queries", func() {
