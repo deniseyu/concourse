@@ -12,11 +12,7 @@ import (
 	"github.com/onsi/gomega/gexec"
 )
 
-var _ = Describe("[#129726011] Worker landing", func() {
-	BeforeEach(func() {
-		Skip("until draining has been re-introduced")
-	})
-
+var _ = Describe("Worker landing", func() {
 	Context("with two workers available", func() {
 		BeforeEach(func() {
 			Skip("unreliable; if worker restarts too fast, test will fail. we should use 'bosh stop' but it turns out that retires, not lands.")
@@ -95,7 +91,7 @@ var _ = Describe("[#129726011] Worker landing", func() {
 					preservedContainerID = string(hijackSession.Out.Contents())
 				})
 
-				It("keeps volumes and containers after restart", func() {
+				FIt("keeps volumes and containers after restart", func() {
 					By("completing the restart")
 					<-restartSession.Exited
 					Expect(restartSession.ExitCode()).To(Equal(0))
@@ -131,7 +127,7 @@ var _ = Describe("[#129726011] Worker landing", func() {
 					Eventually(buildSession).Should(gbytes.Say("waiting forever"))
 				})
 
-				It("does not wait for the build", func() {
+				FIt("does not wait for the build", func() {
 					By("completing the restart without the drain timeout kicking in")
 					Eventually(restartSession, 5*time.Minute).Should(gexec.Exit(0))
 				})
@@ -162,7 +158,7 @@ var _ = Describe("[#129726011] Worker landing", func() {
 					Consistently(restartSession, 5*time.Minute).ShouldNot(gexec.Exit())
 				})
 
-				It("finishes restarting once the build is done", func() {
+				FIt("finishes restarting once the build is done", func() {
 					By("hijacking the build to tell it to finish")
 					<-flyHijackTask(
 						"-b", buildID,
@@ -192,7 +188,7 @@ var _ = Describe("[#129726011] Worker landing", func() {
 		describeRestartingTheWorker()
 	})
 
-	Context("with a single team worker", func() {
+	XContext("with a single team worker", func() {
 		BeforeEach(func() {
 			Deploy("deployments/concourse-separate-forwarded-worker.yml", "-o", "operations/separate-worker-team.yml")
 

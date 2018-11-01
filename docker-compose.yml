@@ -51,3 +51,5 @@ services:
       # so that CI can configure a different network range that doesn't overlap
       # with the outer Garden
     - CONCOURSE_GARDEN_NETWORK_POOL
+
+    - CONCOURSE_REBALANCE_INTERVAL=1s

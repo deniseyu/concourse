@@ -77,10 +77,6 @@ func (cmd *WorkerCommand) gardenRunner(logger lager.Logger) (atc.Worker, ifrit.R
 		// containers are raw://
 		"--no-image-plugin",
 		"--graph", "",
-
-		// XXX: we've been setting this the whole time. is it necessary anymore?
-		// XXX: it's probably necessary for testflight
-		"--allow-host-access",
 	}
 
 	gdnServerFlags = append(gdnServerFlags, detectGardenFlags(logger)...)

@@ -216,14 +216,14 @@ func Deploy(manifest string, args ...string) {
 
 	instances, jobInstances = loadJobInstances()
 
-	boshLogs = spawnBosh("logs", "-f")
+	// 	boshLogs = spawnBosh("logs", "-f")
 
-	for _, is := range instances {
-		for _, i := range is {
-			By("waiting for logs from " + i.Name)
-			Eventually(boshLogs.Out.Contents).Should(ContainSubstring(i.Name))
-		}
-	}
+	// 	for _, is := range instances {
+	// 		for _, i := range is {
+	// 			By("waiting for logs from " + i.Name)
+	// 			Eventually(boshLogs.Out.Contents).Should(ContainSubstring(i.Name))
+	// 		}
+	// 	}
 
 	webInstance = JobInstance("web")
 	if webInstance != nil {
@@ -648,7 +648,7 @@ dance:
 
 		for _, lock := range parseTable(string(locks.Out.Contents())) {
 			if lock[0] == "deployment" && lock[1] == deploymentName {
-				fmt.Fprintf(GinkgoWriter, "waiting for deployment lock (task id %s)...", lock[2])
+				fmt.Fprintf(GinkgoWriter, "waiting for deployment lock (task id %s)...\n", lock[2])
 				time.Sleep(5 * time.Second)
 				continue dance
 			}
